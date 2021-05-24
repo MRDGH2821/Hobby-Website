@@ -1,3 +1,22 @@
+<?php
+require_once('config.php');
+if (isset($_POST['create'])) {
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $contact = $_POST['contact'];
+    $password = $_POST['password'];
+
+    $sql = "INSERT INTO registration (username,email,contact,password) VALUES (?,?,?,?)";
+    $stmtinsert=$db->prepare($sql);
+    $result=$stmtinsert->execute([$username,$email,$contact,$password]);
+    if ($result) {
+        echo 'Registered!';
+    } else {
+        echo 'Failed!';
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <link rel="stylesheet" type="text/css" href="signup.css" media="screen" />
@@ -9,32 +28,19 @@
   </head>
 
   <body style="background-color:#E9E5D0;">
-    <h1 align='center'> Personal Details Form </h1>
-    <form>
-      <label for="fname">First name:</label><br>
-      <input type="text" id="fname" name="fname"><br>
 
-      <label for="lname">Last name:</label><br>
-      <input type="text" id="lname" name="lname"><br>
+    <h1 align='center'> Sign up Form </h1>
+    <form action="<?php echo $_SERVER['PHP_SELF']?>" METHOD="GET">
 
-      <label for="gender">Gender:</label><br>
-      <input type="radio" id="male" name="gender" value="male">
-      <label for="male">Male</label><br>
-      <input type="radio" id="female" name="gender" value="female">
-      <label for="female">Female</label><br>
-      <input type="radio" id="other" name="gender" value="other">
-      <label for="other">Other</label><br>
+      <label for="username">Username: </label><br>
+      <input type="text" id="username" name="username" required><br>
 
-      <br>
+
       <label for="email">Email: </label><br>
       <input type="email" name="email" id="email" required value /> <br>
-      <br>
-      <label for="phno">Phone Number: </label><br>
-      <input type="tel" name="phone_number" id="phone_number" pattern="^\d{10}$" required title="Must be 10 digits" />
-      <br>
-      <br>
-      <label for="usrname">Username: </label><br>
-      <input type="text" id="usrname" name="usrname" required><br>
+
+      <label for="phno">Contact Number: </label><br>
+      <input type="tel" name="contact" id="contact" pattern="^\d{10}$" required title="Must be 10 digits" /><br>
 
       <label for="password">Password: </label><br>
       <input type="password" name="password" id="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{11,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 11 or more characters" required /> <br />
@@ -54,7 +60,7 @@
     <h2> Site map</h2>
     <p><a href="index.html"> Main Page</a></p>
     <p><a href="tag_demos.html">Tags demo</a></p>
-    <p><a href="form.html">Personal Details form</a></p>
+    <p><a href="form.php">Signup page</a></p>
 
   </body>
 
